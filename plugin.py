@@ -128,9 +128,14 @@ class BasePlugin:
 
     def onMessage(self, Connection, Data):
         DumpHTTPResponseToLog(Data)
-        
-        strData = Data["Data"].decode("utf-8", "ignore")
-       
+
+        # Data can be a Dictionary or a ByteArray.
+        if not isinstance(Data, dict):
+            Domoticz.Debug("Invalid data received")
+            return
+
+        strData = Data.get('Data', '').decode("utf-8", "ignore")
+
         Status = int(Data["Status"])
         LogMessage(strData)
 
