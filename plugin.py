@@ -147,13 +147,13 @@ class BasePlugin:
                     strData = re.search(r'(?<=webData=").*?(?=";)', strData).group(0)               # Search for the beginning of the string and the end
                     dataAvailable = True
                 except AttributeError:
-                    Domoticz.Debug("No datastring found")
+                    Domoticz.Error("No datastring found")
             elif (Parameters["Mode2"] == "2"): 
                 try: 
                     strData = re.search(r'(?<=myDeviceArray\[0\]=").*?(?=";)', strData).group(0)    # Search for the beginning of the string and the end
                     dataAvailable = True
                 except AttributeError:
-                    Domoticz.Debug("No datastring found")
+                    Domoticz.Error("No datastring found")
 
             if dataAvailable:
                 strData = strData.split(",")                                            # Split the result string in a list so we can retrieve data
