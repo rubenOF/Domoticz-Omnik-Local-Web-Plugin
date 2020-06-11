@@ -87,7 +87,6 @@ class BasePlugin:
     runAgain = 6
     disconnectCount = 0
     sProtocol = "HTTP"
-    dataAvailable = False
    
     def __init__(self):
         return
@@ -136,20 +135,22 @@ class BasePlugin:
         LogMessage(strData)
 
         if (Status == 200):
+            dataAvailable = False
+
             if (Parameters["Mode2"] == "1"):
                 try: 
                     strData = re.search(r'(?<=webData=").*?(?=";)', strData).group(0)               # Search for the beginning of the string and the end
-                    self.dataAvailable = True
+                    dataAvailable = True
                 except AttributeError:
                     Domoticz.Debug("No datastring found")
             elif (Parameters["Mode2"] == "2"): 
                 try: 
                     strData = re.search(r'(?<=myDeviceArray\[0\]=").*?(?=";)', strData).group(0)    # Search for the beginning of the string and the end
-                    self.dataAvailable = True
+                    dataAvailable = True
                 except AttributeError:
                     Domoticz.Debug("No datastring found")
 
-            if self.dataAvailable:
+            if dataAvailable:
                 strData = strData.split(",")                                            # Split the result string in a list so we can retrieve data
                 Domoticz.Debug("Received RAW Inverter Data: "+str(strData))             # Maybe error correction later if len(line.split()) == 11 / we expect 11 items
         
